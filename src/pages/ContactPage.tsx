@@ -82,7 +82,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hello! I'd like to inquire about Smith Instruments products or catalogues.");
-    window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/923302449855?text=${message}`, '_blank');
   };
 
   const faqs = [
@@ -133,14 +133,14 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#4A4A4A] mb-1" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                      Phone
+                      Phone / WhatsApp
                     </h4>
                     <a
-                      href="tel:+11234567890"
+                      href="tel:+923302449855"
                       className="text-[#666666] hover:text-[#FF6B00] transition-colors block"
                       style={{ fontFamily: 'Open Sans, sans-serif' }}
                     >
-                      +1-123-456-7890
+                      +92 330 2449855
                     </a>
                     <p className="text-sm text-[#999999] mt-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                       Mon-Fri, 9am-6pm EST

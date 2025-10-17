@@ -7,7 +7,7 @@ interface FooterProps {
 export default function Footer({ onNavigate }: FooterProps) {
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hello! I'd like to inquire about Smith Instruments products or catalogues.");
-    window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/923302449855?text=${message}`, '_blank');
   };
 
   return (
@@ -23,7 +23,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/smithinstrumentsusa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#FF6B00] transition-all duration-300"
@@ -32,7 +32,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 <Facebook size={20} />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/smithinstruments/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#FF6B00] transition-all duration-300"
@@ -67,11 +67,11 @@ export default function Footer({ onNavigate }: FooterProps) {
             </h4>
             <div className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
               <a
-                href="mailto:sales@smithinstruments.com"
+                href="mailto:info@smithinstruments.com"
                 className="flex items-start text-[#F5F5F5] hover:text-[#FF6B00] transition-colors"
               >
                 <Mail size={20} className="mr-3 mt-1 flex-shrink-0" />
-                <span>sales@smithinstruments.com</span>
+                <span>info@smithinstruments.com</span>
               </a>
               <button
                 onClick={handleWhatsApp}

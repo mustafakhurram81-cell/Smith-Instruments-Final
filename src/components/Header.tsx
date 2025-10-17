@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { IMAGES } from '../config/images';
 
 interface HeaderProps {
   currentPage: string;
@@ -37,12 +38,14 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
             className="flex items-center cursor-pointer"
             onClick={() => onNavigate('home')}
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B00] to-[#ff8533] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">SI</span>
-            </div>
-            <span className="ml-3 text-xl font-bold text-[#4A4A4A]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-              Smith Instruments
-            </span>
+            <img 
+              src={IMAGES.logo} 
+              alt="Smith Instruments Logo" 
+              className={`transition-all duration-300 ${
+                isScrolled ? 'h-12' : 'h-14'
+              }`}
+              style={{ width: 'auto', maxWidth: '200px' }}
+            />
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">

@@ -8,7 +8,7 @@ interface CataloguesPageProps {
 export default function CataloguesPage({ onNavigate }: CataloguesPageProps) {
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hello! I'd like to inquire about a custom solution for surgical instruments.");
-    window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/923302449855?text=${message}`, '_blank');
   };
 
   const catalogues = [
@@ -74,8 +74,11 @@ export default function CataloguesPage({ onNavigate }: CataloguesPageProps) {
             {catalogues.map((catalogue, index) => (
               <div
                 key={index}
-                className="bg-white border-t-4 border-[#FF6B00] rounded-lg p-8 shadow-md hover:shadow-2xl transition-all duration-300 group"
-                style={{ boxShadow: '0 4px 6px -1px rgba(255, 107, 0, 0.1), 0 2px 4px -1px rgba(255, 107, 0, 0.06)' }}
+                className="bg-white border-t-4 border-[#FF6B00] rounded-lg p-8 shadow-md hover:shadow-2xl transition-all duration-500 group card-hover"
+                style={{ 
+                  boxShadow: '0 4px 6px -1px rgba(255, 107, 0, 0.1), 0 2px 4px -1px rgba(255, 107, 0, 0.06)',
+                  animationDelay: `${index * 0.1}s`
+                }}
               >
                 <div className="w-20 h-20 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mb-6 text-[#FF6B00] group-hover:bg-[#FF6B00] group-hover:text-white transition-all duration-300 mx-auto group-hover:shadow-lg">
                   {catalogue.icon}
@@ -89,11 +92,11 @@ export default function CataloguesPage({ onNavigate }: CataloguesPageProps) {
                 <div className="space-y-3">
                   <button
                     onClick={() => window.open(catalogue.pdfUrl, '_blank')}
-                    className="w-full bg-[#FF6B00] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#ff8533] transition-all duration-300 flex items-center justify-center group/btn"
+                    className="w-full bg-[#FF6B00] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#ff8533] transition-all duration-300 flex items-center justify-center group/btn btn-primary"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
-                    <FileText size={20} className="mr-2" />
-                    View PDF
+                    <FileText size={20} className="mr-2 transition-transform group-hover/btn:scale-110" />
+                    <span className="transition-transform group-hover/btn:translate-x-1">View PDF</span>
                   </button>
                   <button
                     onClick={() => {
@@ -102,11 +105,11 @@ export default function CataloguesPage({ onNavigate }: CataloguesPageProps) {
                       link.download = `${catalogue.title}.pdf`;
                       link.click();
                     }}
-                    className="w-full bg-white border-2 border-[#FF6B00] text-[#FF6B00] px-6 py-3 rounded-full font-semibold hover:bg-[#FF6B00] hover:text-white transition-all duration-300 flex items-center justify-center"
+                    className="w-full bg-white border-2 border-[#FF6B00] text-[#FF6B00] px-6 py-3 rounded-full font-semibold hover:bg-[#FF6B00] hover:text-white transition-all duration-300 flex items-center justify-center group/btn"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
-                    <Download size={20} className="mr-2" />
-                    Download PDF
+                    <Download size={20} className="mr-2 transition-transform group-hover/btn:scale-110" />
+                    <span className="transition-transform group-hover/btn:translate-x-1">Download PDF</span>
                   </button>
                 </div>
               </div>

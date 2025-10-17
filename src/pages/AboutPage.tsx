@@ -8,7 +8,7 @@ interface AboutPageProps {
 export default function AboutPage({ onNavigate }: AboutPageProps) {
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hello! I'd like to discuss a custom solution for surgical instruments.");
-    window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/923302449855?text=${message}`, '_blank');
   };
 
   return (

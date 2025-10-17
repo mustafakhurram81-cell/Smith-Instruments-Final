@@ -1,6 +1,7 @@
 import { ArrowRight, Award, CheckCircle, Truck, Heart, Brain, Stethoscope, Bone, Activity, Eye, Package } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { IMAGES } from '../config/images';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -129,6 +130,7 @@ function ImpactSection() {
 }
 
 function WhyChooseSection() {
+  const { ref, isRevealed } = useScrollReveal();
   const features = [
     {
       icon: <Award size={32} />,
@@ -153,7 +155,7 @@ function WhyChooseSection() {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section ref={ref} className={`py-20 bg-white scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-[#4A4A4A] mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           Why Choose Us
@@ -186,7 +188,8 @@ function WhyChooseSection() {
 }
 
 function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const { ref, isRevealed } = useScrollReveal();
 
   const products = [
     { icon: <Heart size={40} />, title: 'Plastic Surgery', description: 'Precision instruments for reconstructive and cosmetic procedures' },
@@ -198,29 +201,25 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
   ];
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % products.length);
+    setCurrentSlide((prev) => (prev + 1) % products.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+    setCurrentSlide((prev) => (prev - 1 + products.length) % products.length);
   };
 
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-advance
   useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const getVisibleProducts = () => {
-    const visible = [];
-    for (let i = -1; i <= 1; i++) {
-      const index = (currentIndex + i + products.length) % products.length;
-      visible.push({ ...products[index], position: i });
-    }
-    return visible;
-  };
-
   return (
-    <section className="py-20 bg-gradient-to-br from-[#F5F5F5] to-white">
+    <section ref={ref} className={`py-20 bg-gradient-to-br from-[#F5F5F5] to-white scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-[#4A4A4A] mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           Our Products
@@ -229,41 +228,36 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
           Comprehensive range of surgical instruments across multiple specialties
         </p>
 
-        <div className="relative h-96 flex items-center justify-center">
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 z-10 bg-white text-[#FF6B00] p-3 rounded-full shadow-lg hover:bg-[#FF6B00] hover:text-white transition-all"
-            aria-label="Previous"
+        {/* Carousel with transform-based sliding */}
+        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-xl">
+          <div 
+            className="flex"
+            style={{
+              transform: `translateX(-${currentSlide * 33.333}%)`,
+              transition: 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)',
+              width: `${products.length * 33.333}%`,
+              willChange: 'transform'
+            }}
           >
-            <ArrowRight size={24} className="rotate-180" />
-          </button>
-
-          <div className="flex items-center justify-center w-full overflow-hidden">
-            {getVisibleProducts().map((product, idx) => (
+            {products.map((product, idx) => (
               <div
                 key={idx}
-                className={`absolute transition-all duration-500 ${
-                  product.position === 0
-                    ? 'scale-100 opacity-100 z-10'
-                    : product.position === -1
-                    ? 'scale-75 opacity-50 -translate-x-80'
-                    : 'scale-75 opacity-50 translate-x-80'
-                }`}
-                style={{ width: '320px' }}
+                className="px-4 flex-shrink-0"
+                style={{ width: `${100 / 3}%`, minWidth: `${100 / 3}%` }}
               >
-                <div className="bg-white border-t-4 border-[#FF6B00] rounded-lg p-8 shadow-xl">
-                  <div className="w-20 h-20 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mb-4 text-[#FF6B00] mx-auto">
+                <div className="bg-white border-t-4 border-[#FF6B00] rounded-xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col transition-all duration-300">
+                  <div className="w-16 h-16 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mb-4 text-[#FF6B00] mx-auto flex-shrink-0">
                     {product.icon}
                   </div>
-                  <h3 className="text-2xl font-semibold text-[#4A4A4A] mb-3 text-center" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                  <h3 className="text-xl font-semibold text-[#4A4A4A] mb-3 text-center flex-shrink-0" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                     {product.title}
                   </h3>
-                  <p className="text-[#666666] mb-6 text-center leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  <p className="text-[#666666] mb-4 text-center text-sm leading-relaxed flex-grow" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                     {product.description}
                   </p>
                   <button
                     onClick={() => onNavigate('catalogues')}
-                    className="w-full bg-white border-2 border-[#FF6B00] text-[#FF6B00] px-6 py-2.5 rounded-full font-semibold hover:bg-[#FF6B00] hover:text-white transition-all duration-300"
+                    className="w-full bg-[#FF6B00] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#ff8533] text-sm flex-shrink-0 transition-colors duration-300"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
                     See More
@@ -272,27 +266,40 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-center items-center mt-12 gap-4">
+          <button
+            onClick={prevSlide}
+            className="bg-white text-[#FF6B00] p-3 rounded-full shadow-lg hover:bg-[#FF6B00] hover:text-white transition-all duration-300 hover:scale-110"
+            aria-label="Previous"
+          >
+            <ArrowRight size={24} className="rotate-180" />
+          </button>
+
+          <div className="flex gap-2">
+            {products.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? 'bg-[#FF6B00] w-8 h-3'
+                    : 'bg-[#E0E0E0] w-3 h-3 hover:bg-[#FF6B00]/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 z-10 bg-white text-[#FF6B00] p-3 rounded-full shadow-lg hover:bg-[#FF6B00] hover:text-white transition-all"
+            className="bg-white text-[#FF6B00] p-3 rounded-full shadow-lg hover:bg-[#FF6B00] hover:text-white transition-all duration-300 hover:scale-110"
             aria-label="Next"
           >
             <ArrowRight size={24} />
           </button>
-        </div>
-
-        <div className="flex justify-center mt-8 space-x-2">
-          {products.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                idx === currentIndex ? 'bg-[#FF6B00] w-8' : 'bg-[#E0E0E0]'
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -300,8 +307,10 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
 }
 
 function AboutPreview({ onNavigate }: { onNavigate: (page: string) => void }) {
+  const { ref, isRevealed } = useScrollReveal();
+  
   return (
-    <section className="py-20 bg-white">
+    <section ref={ref} className={`py-20 bg-white scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -338,6 +347,7 @@ function AboutPreview({ onNavigate }: { onNavigate: (page: string) => void }) {
 }
 
 function TestimonialsSection() {
+  const { ref, isRevealed } = useScrollReveal();
   const testimonials = [
     {
       name: 'Dr. Maria Rodriguez',
@@ -360,7 +370,7 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-[#F5F5F5] to-white">
+    <section ref={ref} className={`py-20 bg-gradient-to-br from-[#F5F5F5] to-white scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-[#4A4A4A] mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           What Our Clients Say

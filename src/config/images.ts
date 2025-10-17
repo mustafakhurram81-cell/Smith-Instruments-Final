@@ -27,6 +27,9 @@
  */
 
 export const IMAGES = {
+  // LOGO - Your logo from the public folder
+  logo: '/images/smith-logo.jpeg',
+  
   // HOME PAGE IMAGES
   home: {
     // Large background image on the main banner
