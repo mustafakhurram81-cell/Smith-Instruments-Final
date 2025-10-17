@@ -200,16 +200,19 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
     { icon: <Eye size={40} />, title: 'Laryngoscopes', description: 'High-quality laryngoscopes for airway management' }
   ];
 
+  const cardsPerView = 3;
+  const maxSlide = products.length - cardsPerView;
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % products.length);
+    setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + products.length) % products.length);
+    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
   };
 
   const goToSlide = (index: number) => {
-    setCurrentSlide(index);
+    setCurrentSlide(Math.min(index, maxSlide));
   };
 
   // Auto-advance
@@ -233,15 +236,14 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
           <div
             className="flex transition-transform duration-[800ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
             style={{
-              transform: `translateX(-${currentSlide * 33.333}%)`,
-              width: `${products.length * 33.333}%`
+              transform: `translateX(-${currentSlide * (100 / cardsPerView)}%)`
             }}
           >
             {products.map((product, idx) => (
               <div
                 key={idx}
                 className="px-4 flex-shrink-0"
-                style={{ width: `${100 / 3}%` }}
+                style={{ width: `${100 / cardsPerView}%` }}
               >
                 <div className="bg-white border-t-4 border-[#FF6B00] rounded-xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col transition-all duration-300">
                   <div className="w-16 h-16 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mb-4 text-[#FF6B00] mx-auto flex-shrink-0">
@@ -277,7 +279,7 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
           </button>
 
           <div className="flex gap-2">
-            {products.map((_, index) => (
+            {Array.from({ length: maxSlide + 1 }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
