@@ -230,20 +230,18 @@ function ProductsCarousel({ onNavigate }: { onNavigate: (page: string) => void }
 
         {/* Carousel with transform-based sliding */}
         <div className="relative max-w-6xl mx-auto overflow-hidden rounded-xl">
-          <div 
-            className="flex"
+          <div
+            className="flex transition-transform duration-[800ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
             style={{
               transform: `translateX(-${currentSlide * 33.333}%)`,
-              transition: 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)',
-              width: `${products.length * 33.333}%`,
-              willChange: 'transform'
+              width: `${products.length * 33.333}%`
             }}
           >
             {products.map((product, idx) => (
               <div
                 key={idx}
                 className="px-4 flex-shrink-0"
-                style={{ width: `${100 / 3}%`, minWidth: `${100 / 3}%` }}
+                style={{ width: `${100 / 3}%` }}
               >
                 <div className="bg-white border-t-4 border-[#FF6B00] rounded-xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col transition-all duration-300">
                   <div className="w-16 h-16 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mb-4 text-[#FF6B00] mx-auto flex-shrink-0">
